@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: s3-uploader-service
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: AWS_ACCESS_KEY_ID
+        value: your_aws_access_key
+      - key: AWS_SECRET_ACCESS_KEY
+        value: your_aws_secret_key
+      - key: AWS_DEFAULT_REGION
+        value: your_aws_region
+      - key: S3_BUCKET
+        value: your_s3_bucket

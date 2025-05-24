@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>S3 Direct Upload</title>
+</head>
+<body>
+    <h1>Upload to S3 using Presigned URL</h1>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload</button>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Please choose a file.");
+                return;
+            }
+
+            const response = await fetch('/generate-url', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'file_name': file.name,
+                    'content_type': file.type
+                })
+            });
+
+            const data = await response.json();
+            if (data.url) {
+                const upload = await fetch(data.url, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': file.type },
+                    body: file
+                });
+
+                if (upload.ok) {
+                    alert("Upload successful!");
+                } else {
+                    alert("Upload failed.");
+                }
+            } else {
+                alert("Failed to get upload URL.");
+            }
+        }
+    </script>
+</body>
+</html>
