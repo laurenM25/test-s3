@@ -19,6 +19,8 @@ def generate_url():
 
     if file_name == content_type:
         print("The filename equals the content type")
+    else:
+        print(f"The filename does NOT equal the content type. Filename: {file_name}. Content type: {content_type}")
 
     url = generate_presigned_url(file_name, content_type)
     if url:
