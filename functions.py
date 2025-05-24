@@ -10,6 +10,9 @@ def generate_presigned_url(file_name, content_type):
     )
 
     s3_client = session.client('s3')
+    
+    credentials = session.get_credentials()
+    print(f"Using AWS Access Key: {credentials.access_key}")
 
     try:
         response = s3_client.generate_presigned_url(
