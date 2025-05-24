@@ -10,8 +10,15 @@ def index():
 
 @app.route('/generate-url', methods=['POST'])
 def generate_url():
-    file_name = request.form['file_name']
-    content_type = request.form['content_type']
+    data = request.get_json()
+    if not data or 'file_name' not in data or 'content_type' not in data:
+        return jsonify({'error': 'Missing required parameters'}), 400
+    
+    file_name = data['file_name']
+    content_type = data['content_type']
+
+    if file_name == content_type:
+        print("The filename equals the content type")
 
     url = generate_presigned_url(file_name, content_type)
     if url:
