@@ -17,12 +17,13 @@ def generate_url():
     file_name = data['file_name']
     content_type = data['content_type']
 
-    if file_name == content_type:
-        print("The filename equals the content type")
-    else:
-        print(f"The filename does NOT equal the content type. Filename: {file_name}. Content type: {content_type}")
+    print(f"Filename: {file_name}. Content type: {content_type}")
 
     url = generate_presigned_url(file_name, content_type)
+    print("generated presigned url:", url)
+
+    print(f"Content type vs upload header --> content type is same as header, which is: {content_type}")
+
     if url:
         return jsonify({'url': url})
     else:
