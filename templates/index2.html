@@ -1,5 +1,12 @@
-<form id="uploadForm" action="/generate-url" method="POST">
+<form id="uploadForm" action="/url-upload" method="POST">
     <input type="url" id="img_url" name="img_url" placeholder="image address (url)">
+    <input type="text" id="filename" name="filename" placeholder="give it a file name">
+    <input type="text" id="pathname" name="pathname"
+        placeholder="optional: give path for folder (folders, not including filename)">
+    <button type="submit">Upload to S3</button>
+</form>
+<form id="file-uploadForm" action="/file-upload" method="POST" enctype="multipart/form-data">
+    <input type="file" id="file" name="file">
     <input type="text" id="filename" name="filename" placeholder="give it a file name">
     <input type="text" id="pathname" name="pathname"
         placeholder="optional: give path for folder (folders, not including filename)">
@@ -12,7 +19,21 @@
 
         const formData = new FormData(this);
 
-        const uploadResponse = await fetch('/generate-url', {
+        const uploadResponse = await fetch('/url-upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await uploadResponse.json();
+        alert(JSON.stringify(result));
+    };
+
+    document.getElementById("file-uploadForm").onsubmit = async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        const uploadResponse = await fetch('/file-upload', {
             method: 'POST',
             body: formData
         });
